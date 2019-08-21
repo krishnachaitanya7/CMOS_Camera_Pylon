@@ -2,3 +2,4 @@ cmake-build-debug/
 venv/
 .idea
 .git/
+bin_files/P1_E3_T2_left_video.bin

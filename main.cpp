@@ -13,6 +13,9 @@ static const uint32_t c_countOfImagesToGrab = 10;
 
 static const size_t c_maxCamerasToUse = 2;
 
+
+int get_max_of_array(int &input);
+
 void writeCSV(string &filename, Mat &m){
     ofstream myfile;
     myfile.open(filename.c_str());
@@ -33,6 +36,14 @@ void on_mouse_click(int event, int x, int y, int flags, void* ptr) {
         std::cout << "RGB Values at the click x = "<< x << " y= "<< y << rgbText << std::endl;
 
     }
+}
+
+int get_max_of_array(int &input){
+    static int max_int {0};
+    if(input > max_int){
+        max_int = input;
+    }
+    return max_int;
 }
 
 int main(int argc, char* argv[])
