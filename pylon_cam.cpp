@@ -28,10 +28,12 @@ int main(int argc, char* argv[]){
         camera.StartGrabbing( GrabStrategy_LatestImageOnly);
         CGrabResultPtr ptrGrabResult;
         Mat openCvImage;
-        cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create();
+        SimpleBlobDetector::Params params;
+        params.filterByCircularity = true;
+        cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(params);
         std::vector<KeyPoint> keypoints;
         Mat im_with_keypoints;
-//        double min, max;
+        double min, max;
         while(camera.IsGrabbing()){
             camera.RetrieveResult(5000, ptrGrabResult, TimeoutHandling_ThrowException);
             if(ptrGrabResult->GrabSucceeded()){
@@ -39,12 +41,16 @@ int main(int argc, char* argv[]){
                 int height {(int)ptrGrabResult->GetHeight()};
 //                const uint16_t *pImageBuffer = (uint16_t *) ptrGrabResult->GetBuffer();
                 openCvImage = Mat(ptrGrabResult->GetHeight(), ptrGrabResult->GetWidth(),
-                        CV_16UC1, (uint16_t *) ptrGrabResult->GetBuffer());
-                detector->detect(openCvImage, keypoints);
-                drawKeypoints( openCvImage, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
-                imshow("keypoints", im_with_keypoints );
-                waitKey(1);
-//                cv::minMaxLoc(openCvImage, &min, &max);
+                        CV_32SC1, (uint32_t *) ptrGrabResult->GetBuffer());
+//                detector->detect(openCvImage, keypoints);
+//                drawKeypoints( openCvImage, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
+//                namedWindow("keypoints", WINDOW_NORMAL);
+//                resizeWindow("keypoints", 300, 300);
+//                imshow("keypoints", openCvImage );
+//
+//                waitKey(1);
+                cv::minMaxLoc(openCvImage, &min, &max);
+                cout << "Max Value: " << max << endl;
 
             }
 
