@@ -29,14 +29,13 @@ int main(int argc, char* argv[]){
         pixelFormat.SetValue( "Mono12");
         camera.StartGrabbing( GrabStrategy_LatestImageOnly);
         CGrabResultPtr ptrGrabResult;
-        Mat openCvImage;
         uint32_t max_int;
         while(camera.IsGrabbing()){
             camera.RetrieveResult(5000, ptrGrabResult, TimeoutHandling_ThrowException);
             if(ptrGrabResult->GrabSucceeded()){
                 int width {(int)ptrGrabResult->GetWidth()};
                 int height {(int)ptrGrabResult->GetHeight()};
-                const uint8_t *pImageBuffer = (uint8_t *) ptrGrabResult->GetBuffer();
+                const uint16_t *pImageBuffer = (uint16_t *) ptrGrabResult->GetBuffer();
                 max_int = 0;
                 for(int i=0; i < width*height; ++i){
                     if(max_int < (uint32_t) pImageBuffer[i]){
