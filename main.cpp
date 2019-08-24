@@ -10,10 +10,7 @@ using namespace cv;
 using namespace Pylon;
 using namespace std;
 static const uint32_t c_countOfImagesToGrab = 10;
-
 static const size_t c_maxCamerasToUse = 2;
-
-
 int get_max_of_array(int &input);
 
 void writeCSV(string &filename, Mat &m){
