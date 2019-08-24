@@ -29,20 +29,21 @@ int main(int argc, char* argv[]){
         pixelFormat.SetValue( "Mono12");
         camera.StartGrabbing( GrabStrategy_LatestImageOnly);
         CGrabResultPtr ptrGrabResult;
-        CPylonImage pylonImage;
-        CImageFormatConverter formatConverter;
-        formatConverter.OutputPixelFormat = PixelType_BGR8packed;
         Mat openCvImage;
-        double min, max;
+        uint32_t max_int;
         while(camera.IsGrabbing()){
             camera.RetrieveResult(5000, ptrGrabResult, TimeoutHandling_ThrowException);
             if(ptrGrabResult->GrabSucceeded()){
-                formatConverter.Convert(pylonImage, ptrGrabResult);
                 int width {(int)ptrGrabResult->GetWidth()};
                 int height {(int)ptrGrabResult->GetHeight()};
-                openCvImage = Mat(ptrGrabResult->GetHeight(), ptrGrabResult->GetWidth(), CV_8UC3, (uint32_t *) pylonImage.GetBuffer());
-                cv::minMaxLoc(openCvImage, &min, &max);
-                cout << "Max Value in the array: " << max << std::endl;
+                const uint8_t *pImageBuffer = (uint8_t *) ptrGrabResult->GetBuffer();
+                max_int = 0;
+                for(int i=0; i < width*height; ++i){
+                    if(max_int < (uint32_t) pImageBuffer[i]){
+                        max_int = (uint32_t) pImageBuffer[i];
+                    }
+                }
+                cout << "Max Value in the array: " << max_int << std::endl;
                 }
 
             }
