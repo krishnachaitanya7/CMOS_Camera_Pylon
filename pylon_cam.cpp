@@ -33,6 +33,8 @@ int main(int argc, char* argv[]){
         cv::Ptr<cv::SimpleBlobDetector> detector = cv::SimpleBlobDetector::create(params);
         std::vector<KeyPoint> keypoints;
         Mat im_with_keypoints;
+        Ptr<CLAHE> clahe = createCLAHE();
+        clahe->setClipLimit(4);
         double min, max;
         while(camera.IsGrabbing()){
             camera.RetrieveResult(5000, ptrGrabResult, TimeoutHandling_ThrowException);
@@ -41,14 +43,17 @@ int main(int argc, char* argv[]){
                 int height {(int)ptrGrabResult->GetHeight()};
 //                const uint16_t *pImageBuffer = (uint16_t *) ptrGrabResult->GetBuffer();
                 openCvImage = Mat(ptrGrabResult->GetHeight(), ptrGrabResult->GetWidth(),
-                        CV_32SC1, (uint32_t *) ptrGrabResult->GetBuffer());
+                        CV_16UC1, (uint32_t *) ptrGrabResult->GetBuffer());
 //                detector->detect(openCvImage, keypoints);
-//                drawKeypoints( openCvImage, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
-//                namedWindow("keypoints", WINDOW_NORMAL);
-//                resizeWindow("keypoints", 300, 300);
-//                imshow("keypoints", openCvImage );
-//
-//                waitKey(1);
+//                drawKeypoints( openCvImage, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );//
+                //namedWindow("keypoints", WINDOW_NORMAL);
+                //resizeWindow("keypoints", 300, 300);
+                //imshow("keypoints", openCvImage );
+                // ToDo: Test by turning the NIR light on. Should work
+                Mat dst;
+                clahe->apply(openCvImage,dst);
+                imshow("lena_CLAHE",dst);
+                waitKey(1);
                 cv::minMaxLoc(openCvImage, &min, &max);
                 cout << "Max Value: " << max << endl;
 
