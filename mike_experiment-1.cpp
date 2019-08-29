@@ -5,11 +5,13 @@
 #include <opencv4/opencv2/opencv.hpp>
 #include <pylon/PylonIncludes.h>
 #include <fstream>
+#include "matplotlibcpp.h"
 #define COLOR_ROWS 80
 #define COLOR_COLS 250
 using namespace cv;
 using namespace Pylon;
 using namespace std;
+namespace plt = matplotlibcpp;
 
 int main(int argc, char* argv[]){
     // The exit code of the sample application.
@@ -43,14 +45,13 @@ int main(int argc, char* argv[]){
                 int height {(int)ptrGrabResult->GetHeight()};
 //                const uint16_t *pImageBuffer = (uint16_t *) ptrGrabResult->GetBuffer();
                 openCvImage = Mat(ptrGrabResult->GetHeight(), ptrGrabResult->GetWidth(),
-                        CV_16UC1, (uint32_t *) ptrGrabResult->GetBuffer());
+                                  CV_16UC1, (uint32_t *) ptrGrabResult->GetBuffer());
 
                 // ToDo: Test by turning the NIR light on. Should work
                 // ToDo: Test with and without CLAHE
-                // ToDo: Use 16bit to 8 bit conversion just to get the center of blob
+                // ToDo: Use 16bit to 8bit conversion just to get the center of blob
                 Mat dst;
                 clahe->apply(openCvImage,dst);
-                //imshow("lena_CLAHE",dst);
                 detector->detect(openCvImage, keypoints);
                 drawKeypoints( dst, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );//
                 namedWindow("keypoints", WINDOW_NORMAL);
@@ -72,10 +73,8 @@ int main(int argc, char* argv[]){
              << e.GetDescription() << endl;
         exitCode = 1;
     }
-    // Comment the following two lines to disable waiting on exit.
     cerr << endl << "Press Enter to exit." << endl;
     while( cin.get() != '\n');
-    // Releases all pylon resources.
     PylonTerminate();
     return exitCode;
 }
