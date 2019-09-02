@@ -12,9 +12,11 @@ add_executable(cmos_camera_pylon main.cpp)
 add_executable(pylon_final pylon_cam.cpp)
 add_executable(pylon_bin pylon_camera_bin_reference.cpp)
 add_executable(mike_experiment_1 mike_experiment-1.cpp)
+add_executable(cmos_camera_calib cmos_camera_calib.cpp)
 target_link_libraries(cmos_camera_pylon pylonutility pylonbase GenApi_gcc_v3_1_Basler_pylon GCBase_gcc_v3_1_Basler_pylon ${OpenCV_LIBS})
 target_link_libraries(pylon_bin pylonutility pylonbase GenApi_gcc_v3_1_Basler_pylon GCBase_gcc_v3_1_Basler_pylon ${OpenCV_LIBS})
 target_link_libraries(pylon_final pylonutility pylonbase GenApi_gcc_v3_1_Basler_pylon GCBase_gcc_v3_1_Basler_pylon ${OpenCV_LIBS})
 target_link_libraries(mike_experiment_1 pylonutility pylonbase GenApi_gcc_v3_1_Basler_pylon GCBase_gcc_v3_1_Basler_pylon ${OpenCV_LIBS} ${PYTHON_LIBRARIES})
+target_link_libraries(cmos_camera_calib pylonutility pylonbase GenApi_gcc_v3_1_Basler_pylon GCBase_gcc_v3_1_Basler_pylon ${OpenCV_LIBS} ${PYTHON_LIBRARIES})
 
 
