@@ -50,16 +50,12 @@ int main(int argc, char* argv[]){
                 // ToDo: Test by turning the NIR light on. Should work
                 // ToDo: Test with and without CLAHE
                 // ToDo: Use 16bit to 8bit conversion just to get the center of blob
-                Mat dst;
-                clahe->apply(openCvImage,dst);
-                detector->detect(openCvImage, keypoints);
-                drawKeypoints( dst, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );//
-                namedWindow("keypoints", WINDOW_NORMAL);
-                resizeWindow("keypoints", 300, 300);
-                imshow("keypoints", dst);
-                waitKey(1);
-                cv::minMaxLoc(openCvImage, &min, &max);
-                cout << "Max Value: " << max << endl;
+//                cv::minMaxLoc(openCvImage, &min, &max);
+//                cout << "Max Value: " << max << endl;
+                for(int i = 0; i< 1280; i++){
+                    std::cout << openCvImage.at<uint16_t>(784, i) << std::endl;
+                }
+                break;
 
             }
 
