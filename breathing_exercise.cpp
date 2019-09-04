@@ -41,8 +41,10 @@ int main(int argc, char* argv[]){
         double min, max;
         Gnuplot gp;
         std::vector<std::pair<int, int> > pts_A;
+        int i = 0;
         while(camera.IsGrabbing()){
             camera.RetrieveResult(5000, ptrGrabResult, TimeoutHandling_ThrowException);
+
             if(ptrGrabResult->GrabSucceeded()){
                 int width {(int)ptrGrabResult->GetWidth()};
                 int height {(int)ptrGrabResult->GetHeight()};
@@ -55,21 +57,20 @@ int main(int argc, char* argv[]){
                 // ToDo: Use 16bit to 8bit conversion just to get the center of blob
 //                cv::minMaxLoc(openCvImage, &min, &max);
 //                cout << "Max Value: " << max << endl;
-                for(int i = 0; i< 1280; i++){
+                pts_A.push_back(std::make_pair(i, static_cast<int>(openCvImage.at<uint16_t>(671, 1160))));
 
-                    pts_A.push_back(std::make_pair(i, static_cast<int>(openCvImage.at<uint16_t>(671, i))));
-//                    std::cout << openCvImage.at<uint16_t>(784, i) << std::endl;
-
-                }
-                gp << "set xrange [0:1280]\nset yrange [0:4095]\n";
-                // '-' means read from stdin.  The send1d() function sends data to gnuplot's stdin.
-                gp << "plot '-' with lines title 'Breathing Exercise'\n";
-                gp.send1d(pts_A);
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            i++;
+            if (i > 10){
                 break;
-
             }
 
         }
+        gp << "set xrange [0:40]\nset yrange [0:4095]\n";
+        // '-' means read from stdin.  The send1d() function sends data to gnuplot's stdin.
+        gp << "plot '-' with lines title 'Breathing Exercise'\n";
+        gp.send1d(pts_A);
     }
 
     catch (const GenericException &e)
