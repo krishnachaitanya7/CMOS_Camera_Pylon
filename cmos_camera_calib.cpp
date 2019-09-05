@@ -79,9 +79,6 @@ void setup_calibration(int board_width, int board_height,
                     cout << "i = " << max_images << endl;
                     if (max_images > 1000){break;}
                 }
-
-
-
             }
 
         }
