@@ -56,14 +56,20 @@ void setup_calibration(int board_width, int board_height,
             if (ptrGrabResult->GrabSucceeded()) {
                 opencvimage = Mat(ptrGrabResult->GetHeight(), ptrGrabResult->GetWidth(),
                           CV_16UC1, (uint32_t *) ptrGrabResult->GetBuffer());
-                opencvimage.convertTo(img, CV_8U, 0.5);
+                opencvimage.convertTo(img, CV_8UC1, 0.5);
+//                cout << "Rows are: " << img.rows << endl;
+//                cout << "Columns are: " << img.cols << endl;
+
+                // Uncomment below to see WTF is image looking like
+//                imshow("8bit image", img);
+//                waitKey(0);
                 bool found = false;
                 found = cv::findChessboardCorners(img, board_size, corners,
                                                   CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_FILTER_QUADS);
                 if (found) {
-                    cornerSubPix(gray, corners, cv::Size(5, 5), cv::Size(-1, -1),
+                    cornerSubPix(img, corners, cv::Size(5, 5), cv::Size(-1, -1),
                                  TermCriteria(CV_TERMCRIT_EPS | CV_TERMCRIT_ITER, 30, 0.1));
-                    drawChessboardCorners(gray, board_size, corners, found);
+                    drawChessboardCorners(img, board_size, corners, found);
                 }
 
                 vector<Point3f> obj;
